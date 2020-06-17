@@ -1,0 +1,58 @@
+server:
+  # HTTP请求和响应头的最大量，以字节为单位，默认值为4096字节,超过此长度的部分不予处理,一般8K。解决java.io.EOFException: null问题
+  max-http-header-size: 8192
+  use-forward-headers: true
+  compression:
+    enabled: true
+    min-response-size: 1024
+    mime-types: text/plain,text/css,text/xml,text/javascript,application/json,application/javascript,application/xml,application/xml+rss,application/x-javascript,application/x-httpd-php,image/jpeg,image/gif,image/png
+  tomcat:
+    remote-ip-header: X-Forwarded-for
+    protocol-header: X-Forwarded-Proto
+    port-header: X-Forwarded-Port
+    uri-encoding: UTF-8
+
+mybatis:
+  typeAliasesPackage: com.promise.demo.db.model
+  mapperLocations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+spring:
+  application:
+    name: Spring-boot-demo
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  datasource:
+    url: jdbc:mysql://${promise.mysql.host}:${promise.mysql.port}/${promise.databasename}?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&&useSSL=false
+    username: ${promise.mysql.username}
+    password: ${promise.mysql.password}
+    driver-class-name: com.mysql.jdbc.Driver
+    initialization-mode: always
+    continue-on-error: false
+    #schema: classpath:schema.sql
+    #data: classpath:data.sql
+    sql-script-encoding: utf-8
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 15
+      auto-commit: true
+      idle-timeout: 30000
+      pool-name: SpringBootDemo
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: /app
+
+  endpoint:
+    shutdown:
+      enabled: true

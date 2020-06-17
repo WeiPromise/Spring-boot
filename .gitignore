@@ -1,0 +1,20 @@
+# Created by .ignore support plugin (hsz.mobi)
+*target/
+target/
+*logs/
+logs/*
+*.iml
+*/app.pid
+*/.idea
+.idea
+*.swp
+*.log
+/data/*
+libs
+adapter.csv
+store_lock
+*/bin/app.pid
+!/.project
+.project
+.settings
+

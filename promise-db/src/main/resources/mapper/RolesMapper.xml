@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.promise.demo.db.dao.RolesDao">
+    <resultMap id="roles" type="com.promise.demo.db.model.Roles">
+            <id property="rolesId" column="roles_id"/>
+            <result property="rolesName" column="roles_name"/>
+            <result property="status" column="status"/>
+    </resultMap>
+
+    <sql id="columns">
+            `roles_id` ,`roles_name` ,`status`
+    </sql>
+
+    <insert id="insert">
+        insert into `roles`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="rolesId != null">
+                `roles_id`,
+            </if>
+            <if test="rolesName != null">
+                `roles_name`,
+            </if>
+            <if test="status != null">
+                `status`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="rolesId != null">
+            #{rolesId} ,
+            </if>
+            <if test="rolesName != null">
+            #{rolesName} ,
+            </if>
+            <if test="status != null">
+            #{status} ,
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteById">
+        delete from `roles`
+        where `id` = #{id}
+    </delete>
+
+    <delete id="delete">
+        delete from `roles`
+        <trim prefix="where " prefixOverrides="and ">
+            <if test="rolesId != null">
+                and `roles_id` = #{rolesId}
+            </if>
+            <if test="rolesName != null">
+                and `roles_name` = #{rolesName}
+            </if>
+            <if test="status != null">
+                and `status` = #{status}
+            </if>
+        </trim>
+    </delete>
+
+    <delete id="deleteByIds">
+        delete from `roles`
+        where `id` in
+        <foreach collection="ids" open="(" item="id" separator="," close=")">
+        #{id}
+        </foreach>
+    </delete>
+
+    <update id="update">
+        update `roles`
+        <set>
+                <if test="rolesName != null">
+                    `roles_name` = #{rolesName},
+                </if>
+                <if test="status != null">
+                    `status` = #{status},
+                </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="getById" resultMap="roles">
+        select
+        <include refid="columns" />
+        from `roles`
+        where `id` = #{id}
+    </select>
+
+    <select id="list" resultMap="roles">
+        select
+        <include refid="columns" />
+        from `roles`
+        <trim prefix="where " prefixOverrides="and ">
+            <if test="rolesId != null">
+                and `roles_id` = #{rolesId}
+            </if>
+            <if test="rolesName != null">
+                and `roles_name` = #{rolesName}
+            </if>
+            <if test="status != null">
+                and `status` = #{status}
+            </if>
+        </trim>
+    </select>
+</mapper>

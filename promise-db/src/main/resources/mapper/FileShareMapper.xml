@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.promise.demo.db.dao.FileShareDao">
+    <resultMap id="fileShare" type="com.promise.demo.db.model.FileShare">
+        <id property="id" column="id"/>
+        <result property="file" column="file"/>
+        <result property="fileName" column="file_name"/>
+        <result property="createTime" column="create_time"/>
+        <result property="expireTime" column="expire_time"/>
+    </resultMap>
+
+    <resultMap id="fileSharePO" type="com.promise.demo.db.model.FileSharePO">
+        <id property="id" column="id"/>
+        <result property="file" column="file" jdbcType="BLOB"  typeHandler="org.apache.ibatis.type.BlobTypeHandler"/>
+        <result property="fileName" column="file_name"/>
+        <result property="createTime" column="create_time"/>
+        <result property="expireTime" column="expire_time"/>
+    </resultMap>
+
+
+
+    <sql id="columns">
+        `id` ,`file` ,`file_name` ,`create_time` ,`expire_time`
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into `file_share`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                `id`,
+            </if>
+            <if test="file != null">
+                `file`,
+            </if>
+            <if test="fileName != null">
+                `file_name`,
+            </if>
+            <if test="createTime != null">
+                `create_time`,
+            </if>
+            <if test="expireTime != null">
+                `expire_time`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id} ,
+            </if>
+            <if test="file != null">
+                #{file,typeHandler=org.apache.ibatis.type.BlobTypeHandler} ,
+            </if>
+            <if test="fileName != null">
+                #{fileName} ,
+            </if>
+            <if test="createTime != null">
+                #{createTime} ,
+            </if>
+            <if test="expireTime != null">
+                #{expireTime} ,
+            </if>
+        </trim>
+    </insert>
+
+    <select id="findAttachment" resultMap="fileSharePO">
+        select
+        <include refid="columns" />
+        from `file_share`
+        where `id` = #{id}
+    </select>
+
+    <delete id="deleteByIds">
+        delete from `file_share`
+        where `id` in
+        <foreach collection="ids" open="(" item="id" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
